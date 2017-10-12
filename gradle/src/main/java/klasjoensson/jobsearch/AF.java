@@ -2,6 +2,8 @@ package klasjoensson.jobsearch;
 
 import klasjoensson.jobsearch.util.HttpRequest;
 
+import java.io.IOException;
+
 /**
  * This class handles the calls to Arbetsförmedlingen.
  *
@@ -20,7 +22,14 @@ public class AF {
 
         String url = BASE_URL + "/platsannonser/soklista/lan";
 
-        return HttpRequest.get(url);
+        try {
+            return HttpRequest.get(url);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return "Error";
+        }
     }
 
     /**
@@ -32,6 +41,13 @@ public class AF {
 
         String url = BASE_URL + "/platsannonser/soklista/lan2";
 
-        return HttpRequest.get(url);
+        try {
+            return HttpRequest.get(url);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return "Error";
+        }
     }
 }
