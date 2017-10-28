@@ -3,6 +3,8 @@ package klasjoensson.jobsearch;
 import klasjoensson.jobsearch.util.HttpRequest;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * This class handles the calls to Arbetsförmedlingen.
@@ -168,7 +170,7 @@ public class AF {
      * @return One page of ads
      */
     public static String searchForAds(Integer[] countyIds, Integer[] shiresIds, Integer[] professionIds,
-                                      String[] keywords, int page, int rows) {
+                                      String[] keywords, int page, int rows) throws UnsupportedEncodingException {
 
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append("/platsannonser/matchning?");
@@ -199,7 +201,7 @@ public class AF {
             } else {
                 firstArg = false;
             }
-            url.append(getQueryPart("nyckelord", keywords));
+            url.append( getQueryPart("nyckelord", keywords));
         }
         if (page > 0) {
             if (!firstArg) {
@@ -228,14 +230,18 @@ public class AF {
         }
     }
 
-    private static String getQueryPart(String queryPart, Object[] queryList) {
-        StringBuilder url= new StringBuilder(queryPart);
+    private static String getQueryPart(String queryPart, Object[] queryList) throws UnsupportedEncodingException {
+        StringBuilder url = new StringBuilder(queryPart);
         url.append("=");
+
+        StringBuilder subUrl = new StringBuilder();
         for (Object id:queryList){
-            url.append(id);
-            url.append(" ");
+            subUrl.append(id);
+            subUrl.append(" ");
         }
-        url.deleteCharAt(url.length()-1);
+        subUrl.deleteCharAt(subUrl.length()-1);
+
+        url.append( URLEncoder.encode( subUrl.toString(), "UTF-8" ) );
 
         return url.toString();
     }

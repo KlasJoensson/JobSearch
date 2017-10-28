@@ -7,12 +7,14 @@
 <body>
 This will be a web app for searching and rating job adds provided by the API from Arbetsförmedlingen.
 <br>
-<button id="test-btn" onclick="test()">Test</button>
+Sök efter: <input type="text" id="searchFor"><br>
+<button id="test-btn" onclick="test()">Sök</button>
 
 <script>
 function test() {
-    $.post("counties.jsp", function (data) {
-        alert("Response: " + data);
+    $.post("counties.jsp", {keyWords: $("#searchFor").val() },
+        function(data) {
+            alert("Antal hittade anonnser: " + data.matchningslista.antal_platserTotal);
     });
 
 }
